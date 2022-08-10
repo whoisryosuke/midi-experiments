@@ -5,6 +5,7 @@ import styles from '../styles/Home.module.css'
 import { Midi } from '@tonejs/midi'
 import { useEffect, useState } from 'react'
 import * as Tone from 'tone'
+import SongPlayer from '../components/SongPlayer/SongPlayer'
 
 const Home: NextPage = () => {
   const [midiFile, setMidiFile] = useState<Midi | null>(null)
@@ -33,23 +34,26 @@ const Home: NextPage = () => {
 
   const playSong = () => {
     if(!midiFile) return
+    console.log('Playing song')
     setPlaying(true);
-    const now = Tone.now() + 0.5
-    const track = midiFile.tracks[currentTrackId];
-      //create a synth for each track
-      const synth = new Tone.PolySynth(Tone.Synth, {
-        envelope: {
-          attack: 0.02,
-          decay: 0.1,
-          sustain: 0.3,
-          release: 1
-        }
-      }).toDestination()
-      setSynths((prevSynths) => ([...prevSynths, synth]))
-      //schedule all of the events
-      track.notes.forEach(note => {
-        synth.triggerAttackRelease(note.name, note.duration, note.time + now, note.velocity)
-      })
+
+    // Play song
+    // const now = Tone.now() + 0.5
+    // const track = midiFile.tracks[currentTrackId];
+    //   //create a synth for each track
+    //   const synth = new Tone.PolySynth(Tone.Synth, {
+    //     envelope: {
+    //       attack: 0.02,
+    //       decay: 0.1,
+    //       sustain: 0.3,
+    //       release: 1
+    //     }
+    //   }).toDestination()
+    //   setSynths((prevSynths) => ([...prevSynths, synth]))
+    //   //schedule all of the events
+    //   track.notes.forEach(note => {
+    //     synth.triggerAttackRelease(note.name, note.duration, note.time + now, note.velocity)
+    //   })
   }
 
   const handleTrackSelect = (e) => {
@@ -73,6 +77,9 @@ const Home: NextPage = () => {
       </Head>
 
       <main className={styles.main}>
+
+        {midiFile && <SongPlayer playing={playing} track={midiFile.tracks[currentTrackId]} />}
+
         <input type="file" name="MIDIUpload" onChange={handleMidiImport} />
         {midiFile && (
           <div>
