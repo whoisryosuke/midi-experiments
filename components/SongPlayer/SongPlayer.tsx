@@ -2,6 +2,8 @@ import { Track } from '@tonejs/midi';
 import { Note } from '@tonejs/midi/dist/Note';
 import React, { useEffect, useRef, useState } from 'react'
 import * as Tone from 'tone'
+import { FRAME_HEIGHT_TIME } from '../../utils/constants';
+import NoteWaterfall from './NoteWaterfall';
 
 type Props = {
     playing: boolean;
@@ -9,7 +11,6 @@ type Props = {
 }
 
 const SongPlayer = ({playing, track}: Props) => {
-    const [notes, setNotes] = useState<Note[]>([])
     const [currentTime, setCurrentTime] = useState(new Date())
     const initialTime = useRef<Date | null>(null)
     console.log('track', track)
@@ -17,8 +18,6 @@ const SongPlayer = ({playing, track}: Props) => {
     const lastNote = track.notes[track.notes.length - 1];
     // Current seconds of song
     const songDuration = initialTime.current ? (currentTime - initialTime.current) / 100 : 0;
-    // Our graph goes from 0 - FRAME_HEIGHT_TIME seconds
-    const FRAME_HEIGHT_TIME = 10;
 
 
     // Play/pause logic
@@ -65,7 +64,8 @@ const SongPlayer = ({playing, track}: Props) => {
         <h1>Song Duration: {songDuration}</h1>
 
         <div>
-            {visibleNotes.map(note => <h2 key={`${note.name}-${note.time}`}>{note.name} - {note.time} - {note.duration}</h2>)}
+            {/* {visibleNotes.map(note => <h2 key={`${note.name}-${note.time}`}>{note.name} - {note.time} - {note.duration}</h2>)} */}
+            <NoteWaterfall notes={visibleNotes} time={songDuration} />    
         </div>
     </div>
   )
