@@ -30,24 +30,27 @@ const SongPlayer = ({playing, track}: Props) => {
         initialTime.current = new Date();
     }
     const isSongEnd = lastNote && songDuration / 100 >= lastNote.time
+
+    const animateTime = () => {
+      setCurrentTime(new Date())
+      interval = requestAnimationFrame(animateTime);
+    }
     
     // Playing? Advance time!
     if(playing && !isSongEnd) {
-        interval = setInterval(() => {
-            setCurrentTime(new Date())
-        }, 100);
+        interval = requestAnimationFrame(animateTime);
     }
 
     // Stopped playing? Stop timer!
-    if(!playing && isSongEnd) {
-      clearInterval(interval);
+    if(!playing && isSongEnd && interval) {
+      cancelAnimationFrame(interval);
     }
 
 
     // Clear timer if we dismount
     return () => {
         //@ts-ignore
-      clearInterval(interval);
+      cancelAnimationFrame(interval);
     }
   }, [playing, songDuration, lastNote])
 

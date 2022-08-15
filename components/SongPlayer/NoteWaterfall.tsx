@@ -11,10 +11,41 @@ type Props = {
 
 const NoteWaterfall = ({notes, time}: Props) => {
   return (
+    <div>
+      <ul style={{display: 'flex', listStyle: 'none', padding: 0, textAlign: 'center', }}>
+        <li
+    style={{
+        width: `25px`, marginRight: '5px',
+    }}>C</li>
+        <li
+    style={{
+        width: `25px`, marginRight: '5px',
+    }}>D</li>
+        <li
+    style={{
+        width: `25px`, marginRight: '5px',
+    }}>E</li>
+        <li
+    style={{
+        width: `25px`, marginRight: '5px',
+    }}>F</li>
+        <li
+    style={{
+        width: `25px`, marginRight: '5px',
+    }}>G</li>
+        <li
+    style={{
+        width: `25px`, marginRight: '5px',
+    }}>A</li>
+        <li
+    style={{
+        width: `25px`, marginRight: '5px',
+    }}>B</li>
+      </ul>
     <div style={{position:'relative'}}>
     <AnimatePresence>
         {notes.map((note, id) => <Note key={`${note.name}-${note.time}`} note={note} time={time} id={id} />)}
-    </AnimatePresence></div>
+    </AnimatePresence></div></div>
   )
 }
 
