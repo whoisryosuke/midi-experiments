@@ -8,9 +8,10 @@ import NoteWaterfall from './NoteWaterfall';
 type Props = {
     playing: boolean;
     track: Track;
+    setPlaying: any;
 }
 
-const SongPlayer = ({playing, track}: Props) => {
+const SongPlayer = ({playing, track, setPlaying}: Props) => {
     const [currentTime, setCurrentTime] = useState(0)
     console.log('track', track)
     // Did we hit last note? Stop! 
@@ -19,6 +20,11 @@ const SongPlayer = ({playing, track}: Props) => {
     const songDuration = currentTime;
 
     console.log('web audio time', Tone.now())
+
+    const restartSong = () => {
+      setCurrentTime(0);
+      setPlaying(false);
+    }
 
     // Play/pause logic
   useEffect(() => {
@@ -61,6 +67,7 @@ const SongPlayer = ({playing, track}: Props) => {
   return (
     <div>
         <h1>Song Duration: {minutes} : {seconds}</h1>
+        <button onClick={restartSong}>Restart Song</button>
 
         <div>
             {/* {visibleNotes.map(note => <h2 key={`${note.name}-${note.time}`}>{note.name} - {note.time} - {note.duration}</h2>)} */}
