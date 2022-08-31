@@ -6,6 +6,7 @@ import { Midi } from '@tonejs/midi'
 import { useEffect, useState } from 'react'
 import * as Tone from 'tone'
 import SongPlayer from '../components/SongPlayer/SongPlayer'
+import MIDIKeyboard from '../components/MIDIKeyboard'
 
 const Home: NextPage = () => {
   const [midiFile, setMidiFile] = useState<Midi | null>(null)
@@ -89,6 +90,8 @@ const Home: NextPage = () => {
             <button onClick={playSong}>Play Song</button>
           </div>
         )}
+
+        <MIDIKeyboard />
       </main>
     </div>
   )
