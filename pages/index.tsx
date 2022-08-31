@@ -38,22 +38,22 @@ const Home: NextPage = () => {
     setPlaying(true);
 
     // Play song
-    // const now = Tone.now() + 0.5
-    // const track = midiFile.tracks[currentTrackId];
-    //   //create a synth for each track
-    //   const synth = new Tone.PolySynth(Tone.Synth, {
-    //     envelope: {
-    //       attack: 0.02,
-    //       decay: 0.1,
-    //       sustain: 0.3,
-    //       release: 1
-    //     }
-    //   }).toDestination()
-    //   setSynths((prevSynths) => ([...prevSynths, synth]))
-    //   //schedule all of the events
-    //   track.notes.forEach(note => {
-    //     synth.triggerAttackRelease(note.name, note.duration, note.time + now, note.velocity)
-    //   })
+    const now = Tone.now() + 0.5
+    const track = midiFile.tracks[currentTrackId];
+      //create a synth for each track
+      const synth = new Tone.PolySynth(Tone.Synth, {
+        envelope: {
+          attack: 0.02,
+          decay: 0.1,
+          sustain: 0.3,
+          release: 1
+        }
+      }).toDestination()
+      setSynths((prevSynths) => ([...prevSynths, synth]))
+      //schedule all of the events
+      track.notes.forEach(note => {
+        synth.triggerAttackRelease(note.name, note.duration, note.time + now, note.velocity)
+      })
   }
 
   const handleTrackSelect = (e) => {

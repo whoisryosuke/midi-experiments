@@ -43,6 +43,7 @@ const Note = ({note, time, id}: Props) => {
     const isNoteOver = note.time + note.duration <= time - GAP;
     const percentDone = note.time - time; 
     const horizontalPosition = alphaVal(note.pitch);
+    // console.log('percentDone', note, percentDone)
   return (
     <motion.div 
     //animate={{ translateY: isNoteOver ? -300 : 0 }} 
@@ -51,7 +52,7 @@ const Note = ({note, time, id}: Props) => {
         height: `${note.duration * 100}px`,
         backgroundColor: 'blue',
         translateX: `${HORIZONTAL_POSITIONS[horizontalPosition]}px`,
-        translateY: `${percentDone * 100}px`,
+        translateY: `${1 - percentDone * 100}px`,
         position: 'absolute',
         transition: 'translateY 400ms linear',
     }}

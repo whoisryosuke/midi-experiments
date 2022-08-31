@@ -42,7 +42,7 @@ const NoteWaterfall = ({notes, time}: Props) => {
         width: `25px`, marginRight: '5px',
     }}>B</li>
       </ul>
-    <div style={{position:'relative'}}>
+    <div style={{position:'relative', borderBottom: '2px solid white'}}>
     <AnimatePresence>
         {notes.map((note, id) => <Note key={`${note.name}-${note.time}`} note={note} time={time} id={id} />)}
     </AnimatePresence></div></div>
