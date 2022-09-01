@@ -10,69 +10,9 @@ import MIDIKeyboard from '../components/MIDIKeyboard'
 import { QuickNote } from '../utils/types'
 import { Note } from 'webmidi'
 import sample from '../songs/sample'
+import App from '../components/App'
 
 const Home: NextPage = () => {
-  const [midiFile, setMidiFile] = useState<Midi | null>(sample)
-  const [synths, setSynths] = useState<Tone.PolySynth[]>([])
-  const [currentTrackId, setCurrentTrackId] = useState<number>(0)
-  const [playing, setPlaying] = useState<boolean>(false)
-  const [successfulNotes, setSucessfulNotes] = useState<Note[]>([]);
-
-  const currentSong = midiFile?.tracks[currentTrackId];
-
-  const handleMidiImport = (e) => {
-    console.log('Input change', e.target.files)
-    var fr = new FileReader();
-    fr.onload = function () {
-        var data = fr.result;
-        if(!data) return;
-        console.log('Loading midi file...', data)
-        
-        // Parse MIDI
-        const midi = new Midi(data);
-        console.log('Parsed midi file', midi)
-
-        if(midi) setMidiFile(midi);
-        
-    };
-    fr.readAsArrayBuffer(e.target.files[0]);
-  }
-
-
-  const playSong = () => {
-    if(!midiFile || !currentSong) return
-    console.log('Playing song')
-    setPlaying(true);
-
-    // Play song
-    const now = Tone.now()
-      //create a synth for each track
-      const synth = new Tone.PolySynth(Tone.Synth, {
-        envelope: {
-          attack: 0.02,
-          decay: 0.1,
-          sustain: 0.3,
-          release: 1
-        }
-      }).toDestination()
-      setSynths((prevSynths) => ([...prevSynths, synth]))
-      //schedule all of the events
-      currentSong.notes.forEach(note => {
-        synth.triggerAttackRelease(note.name, note.duration, note.time + now, note.velocity)
-      })
-  }
-
-  const handleTrackSelect = (e) => {
-    setCurrentTrackId(e.target.value)
-  }
-
-  useEffect(() => {
-    if(!playing && synths.length > 0) {
-					//dispose the synth and make a new one
-          synths.forEach((synth) => synth.dispose())
-					setSynths([])
-    }
-  }, [synths, playing])
 
   return (
     <div className={styles.container}>
@@ -84,20 +24,7 @@ const Home: NextPage = () => {
 
       <main className={styles.main}>
 
-        <MIDIKeyboard playing={playing} track={currentSong} setSucessfulNotes={setSucessfulNotes} />
-        {midiFile && currentSong && <SongPlayer playing={playing} track={currentSong} setPlaying={setPlaying} />}
-
-
-
-        <input type="file" name="MIDIUpload" onChange={handleMidiImport} />
-        {midiFile && (
-          <div>
-            <select value={currentTrackId} onChange={handleTrackSelect}>
-              {midiFile.tracks.map((track, id) => <option key={`Track ${id}`} value={id}>Track {id} - {track.name}</option>)}
-            </select>
-            <button onClick={playSong}>Play Song</button>
-          </div>
-        )}
+        <App />
 
       </main>
     </div>
